@@ -18,4 +18,6 @@ npm run build
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 ### 后端
-后端 [后端](https://github.com/lantanyu/SecondaryMarket)
+[后端](https://github.com/lantanyu/SecondaryMarket)
+### 后台前端
+[后端](https://github.com/lantanyu/gl-bs)
