@@ -89,19 +89,19 @@ productbyid (state, {products}) {
 		}
 	})
 	products.pic = arrstr2
-	if(products.usericon!=null){
-		products.usericon = 'http://127.0.0.1:7003/img/'+products.usericon
-	}
-	products.comments.forEach(comment => {
-		if(comment.icon!=null){
-		  comment.icon = 'http://127.0.0.1:7003/img/'+comment.icon
-		}
-		comment.bycomments.forEach(bycomment => {
-		  if(comment.icon!=null){
-			  bycomment.icon = 'http://127.0.0.1:7003/img/'+bycomment.icon
-		  }
-		})
-	})  
+	// if(products.usericon!=null){
+	// 	products.usericon = 'http://127.0.0.1:7003/img/'+products.usericon
+	// }
+	// products.comments.forEach(comment => {
+	// 	if(comment.icon!=null){
+	// 	  comment.icon = 'http://127.0.0.1:7003/img/'+comment.icon
+	// 	}
+	// 	comment.bycomments.forEach(bycomment => {
+	// 	  if(comment.icon!=null){
+	// 		  bycomment.icon = 'http://127.0.0.1:7003/img/'+bycomment.icon
+	// 	  }
+	// 	})
+	// })  
   
   state.products = products
 },
@@ -138,5 +138,11 @@ productsbymy (state,{sproducts}) {
 },
 getcount(state,{count}) {
 	state.count = count
+},
+creatcomment(state,{comment}) {
+	state.products.comments.push(comment)
+},
+creatbycomment(state,{comment,bycomment}) {
+	comment.bycomments.push(bycomment)
 }
 }

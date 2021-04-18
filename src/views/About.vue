@@ -4,7 +4,7 @@
 		
 		<div style="background-color: #f1f1f1;" class="clearfix">
 			<div id="yie" style="text-align: center;">
-				<el-pagination background layout="prev, pager, next" :page-size="6" :total="totalsbyname" @current-change="handleCurrentChange">
+				<el-pagination background layout="prev, pager, next" :page-size="10" :total="totalsbyname" @current-change="handleCurrentChange">
 				</el-pagination>
 			</div>
 		</div>

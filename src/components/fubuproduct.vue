@@ -137,19 +137,29 @@ export default {
 		
 		let pricerule = (rule, value, callback) => {
 		  if (value<=0) {
-		    return callback(new Error("不能为零"));
+		  	return callback(new Error("不能为负数"));
 		  }
-			this.$refs.ruleForm.validateField("checkPass");
-			return callback();
+		  const Rule = /^[0-9]+(\.[0-9]{1,2})?$/;
+		  if (Rule.test(value)) {
+		  	this.$refs.ruleForm.validateField("checkPass");
+		  	return callback();
+		  } else {
+		  	return callback(new Error("两位小数"));
+		  }
 		 
 		};
 		
 		let baoyoupricerule = (rule, value, callback) => {
 		  if (value<0) {
-		    return callback(new Error("出错"));
+		  	return callback(new Error("不能为负数"));
 		  }
-			this.$refs.ruleForm.validateField("checkPass");
-			return callback();
+		  const Rule = /^[0-9]+(\.[0-9]{1,2})?$/;
+		  if (Rule.test(value)) {
+		  	this.$refs.ruleForm.validateField("checkPass");
+		  	return callback();
+		  } else {
+		  	return callback(new Error("两位小数"));
+		  }
 		};
 		
 		
@@ -408,6 +418,11 @@ export default {
 				  let children = []
 				  let fenlei2s = fenlei1.fenlei2s
 				  fenlei2s.forEach(fenlei2 =>{
+						if(this.isfabugenxin){
+							if(fenlei2.fenlei2id==this.$store.state.products.fenlei2id){
+								this.product.fenlei2id=[fenlei1.fenlei1id,fenlei2.fenlei2id]
+							}
+						}
 						children.push({value:fenlei2.fenlei2id,label:fenlei2.name})	
 				  })
 				  fenleis2.push({value:fenlei1.fenlei1id,label:fenlei1.name,children:children})

@@ -48,8 +48,8 @@ export default {
 	})
   },
   productbyid({commit},{productid}) {
-	  let urls = 'http://127.0.0.1:7003/product/all/getproductxxbyid/'+productid
-	  axios({
+	  let urls = '/product/all/getproductxxbyid/'+productid
+	  request({
 	    method: 'get',
 	    url: urls,
 	    headers: {'token': window.localStorage.getItem('token')},
@@ -182,6 +182,43 @@ getproductbymy({commit},{yie}){
 	  console.log(error)
 	  Vue.prototype.notifyError("连接失败")
 	})
+},
+creatcomment({commit},{comment}) {
+	request({
+		method: 'post',
+		url: `/product/creatcomment`,
+		data: comment,
+		headers: {'token': window.localStorage.getItem('token')},
+	}).then(response => {
+		if(response.data.code==200){
+			const comment2 = response.data.data
+			commit('creatcomment',{comment: comment2})
+			Vue.prototype.notifySucceed(response.data.message)
+		}else {
+			Vue.prototype.notifyError(response.data.message)
+		}
+	}).catch((error) => {
+		console.log(error)
+		Vue.prototype.notifyError("连接失败")
+	})
+},
+creatbycomment({commit},{comment,bycomment}) {
+	request({
+		method: 'post',
+		url: `/product/creatbycomment`,
+		data: bycomment,
+		headers: {'token': window.localStorage.getItem('token')},
+	}).then(response => {
+		if(response.data.code==200){
+			const bycomment2 = response.data.data
+			commit('creatbycomment',{comment:comment,bycomment: bycomment2})
+			Vue.prototype.notifySucceed(response.data.message)
+		}else {
+			Vue.prototype.notifyError(response.data.message)
+		}
+	}).catch((error) => {
+		console.log(error)
+		Vue.prototype.notifyError("连接失败")
+	})
 }
-
 }

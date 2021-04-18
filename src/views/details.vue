@@ -3,7 +3,7 @@
 		<div class="page-header">
 		  <div class="title ">
 				<router-link :to="{path: '/you', query: {userid: products.userid}}">
-					<el-avatar size="large" class="avater"><img :src="products.usericon" class="image"></el-avatar>
+					<el-avatar size="large" class="avater"><img :src="'http://127.0.0.1:7003/img/'+products.usericon" class="image"></el-avatar>
 					<p>{{products.username}}</p>
 				</router-link>
 		  </div>
@@ -16,36 +16,44 @@
 						</el-carousel-item>
 					</el-carousel>
 					<div class="pinglun">
-							<h1 class="pinluntilter">留言</h1>
+							<h1 class="pinluntilter">
+								留言：
+								<el-input style="width: 500px;" placeholder="请输入留言" v-model="text1" >
+									<el-button @click="creatcomment"  slot="append" icon="el-icon-position" ></el-button>
+								</el-input>
+							</h1>
 						<ul>
 							<li v-for="(comment, index) in products.comments" :key="index" class="lis clearfix">
-								<el-avatar size="large" class="avater2" ><img :src="comment.icon" class="image"></el-avatar>
+								<el-avatar size="large" class="avater2" ><img :src="'http://127.0.0.1:7003/img/'+comment.icon" class="image"></el-avatar>
 								<div class="divfloat" >
 									<div style="height: 40px;">
 										<div class="pinlunname">{{comment.name}}</div>
 										<div class="pingluntime">{{comment.time | dateFormat}}</div>
 									</div>
 									<p style="margin-top: 15px;">{{comment.text}}</p>
-									<div style="margin-top: 15px; margin-bottom: 15px;">
-										<el-input placeholder="请输入搜索内容" >
-										  <el-button  slot="append" icon="el-icon-search" ></el-button>
-										</el-input>
-									</div>	
+									<el-popover  placement="right" width="600" trigger="click" >
+											<el-input placeholder="请输入留言" v-model="text2" >
+												<el-button @click="creatbycomment1(comment)" slot="append" icon="el-icon-position" ></el-button>
+											</el-input>
+										<el-button type="primary" size="small"   style="margin-top: 15px; margin-bottom: 15px;" slot="reference">回复用户</el-button>
+									</el-popover>
+										
 									
 									<ul>
 										<li v-for="(bycomment,index) in comment.bycomments" :key="index" class="clearfix">
-											<el-avatar size="large" class="avater3" ><img :src="bycomment.icon" class="image"></el-avatar>
+											<el-avatar size="large" class="avater3" ><img :src="'http://127.0.0.1:7003/img/'+bycomment.icon" class="image"></el-avatar>
 											<div class="divfloat2" >
 												<div style="height: 40px;">
 													<div class="pinlunname">{{bycomment.name}}</div>
 													<div class="pingluntime">{{bycomment.time | dateFormat}}</div>
 												</div>
 												<p style="margin-top: 15px;">{{bycomment.text}}</p>
-												<div style="margin-top: 15px; margin-bottom: 15px;">
-													<el-input placeholder="请输入搜索内容" >
-													  <el-button  slot="append" icon="el-icon-search" ></el-button>
-													</el-input>
-												</div>	
+												<el-popover  placement="right" width="600" trigger="click" >
+														<el-input placeholder="请输入留言" v-model="text3" >
+															<el-button @click="creatbycomment2(comment,bycomment)" slot="append" icon="el-icon-position" ></el-button>
+														</el-input>
+													<el-button type="primary" size="small" style="margin-top: 15px; margin-bottom: 15px;" slot="reference">回复用户</el-button>
+												</el-popover>
 											</div>
 										</li>
 									</ul>
@@ -101,6 +109,45 @@ export default {
 		order() {
 			// this.$router.push({ path: "/goods", query: { search: this.search } });
 			this.$router.push({ path: "/quedingorder"});
+		},
+		creatcomment() {
+			if(this.user==""){
+				this.notifyError("请先登入");
+				this.$store.dispatch('setShowLogin',true)
+				return
+			}
+			if(this.text1.length<=0){
+				this.notifyError("至少一个字符")
+				return
+			}
+			let comment = {productid:this.products.productid,text:this.text1}
+			this.$store.dispatch('creatcomment',{comment:comment})
+		},
+		creatbycomment1(comment) {
+			if(this.user==""){
+				this.notifyError("请先登入");
+				this.$store.dispatch('setShowLogin',true)
+				return
+			}
+			if(this.text2.length<=0){
+				this.notifyError("至少一个字符")
+				return
+			}
+			let bycomment = {commentid:comment.commentid,text:this.text2,byuserid:comment.userid}
+			this.$store.dispatch('creatbycomment',{comment:comment,bycomment:bycomment})
+		},
+		creatbycomment2(comment,bycomments) {
+			if(this.user==""){
+				this.notifyError("请先登入");
+				this.$store.dispatch('setShowLogin',true)
+				return
+			}
+			if(this.text3.length<=0){
+				this.notifyError("至少一个字符")
+				return
+			}
+			let bycomment = {commentid:comment.commentid,text:this.text3,byuserid:bycomments.userid}
+			this.$store.dispatch('creatbycomment',{comment:comment,bycomment:bycomment})
 		}
 	},
 	activated() {
@@ -111,7 +158,10 @@ export default {
 	},
 	data() {
 		return {
-			productid: ""
+			productid: "",
+			text1: '',
+			text2: '',
+			text3: ''
 		}
 	},
 	// watch: {

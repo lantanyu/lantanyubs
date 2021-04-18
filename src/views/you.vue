@@ -20,7 +20,7 @@
 	
 	<div style="background-color: #f1f1f1;" class="clearfix">
 		<div id="yie" style="text-align: center;">
-			<el-pagination background layout="prev, pager, next" :page-size="6" :total="total" @current-change="handleCurrentChange">
+			<el-pagination background layout="prev, pager, next" :page-size="10" :total="total" @current-change="handleCurrentChange">
 			</el-pagination>
 		</div>
 	</div>
@@ -41,7 +41,7 @@ export default {
 			const userid = this.$route.query.userid
 			request({
 				  method: 'get',
-				  url: `/user/userbyid/${userid}`,
+				  url: `/user/all/userbyid/${userid}`,
 				  headers: {'token': window.localStorage.getItem('token')},
 				}).then(response => {
 					console.log(response.data.code)
@@ -56,7 +56,7 @@ export default {
 				})	
 			request({
 				  method: 'get',
-				  url: `/user/getcountid/${userid}`,
+				  url: `/user/all/getcountid/${userid}`,
 				  headers: {'token': window.localStorage.getItem('token')},
 				}).then(response => {
 					console.log(response.data.code)
@@ -75,11 +75,11 @@ export default {
 		}
 	},
 	mounted() {
-		this.$store.dispatch('getproductbymy',{yie:1}) 
+		//this.$store.dispatch('getproductbymy',{yie:1}) 
 	},
 	methods: {
 		handleCurrentChange(val) {
-			console.log(`当前页: ${val}`);
+			this.getproduct(this.$route.query.userid,val)
 		},
 		getproduct(userid,yie) {
 			yie = yie-1

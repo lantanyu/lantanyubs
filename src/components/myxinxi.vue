@@ -218,6 +218,8 @@ export default {
 									this.user.icon = 'http://127.0.0.1:7003/img/'+response.data.data
 								}
 								this.user.city = city
+								let userbs = JSON.stringify(this.user);
+								window.localStorage.setItem("user", userbs);
 								this.$refs["ruleForm"].resetFields();
 								this.fileList =[]
 								this.ismyxinxi = false

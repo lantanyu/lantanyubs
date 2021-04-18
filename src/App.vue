@@ -14,8 +14,8 @@
 		        <el-popover placement="top" width="180" v-model="visible">
 		          <p>确定退出登录吗？</p>
 		          <div style="text-align: right; margin: 10px 0 0">
-		            <el-button size="mini" type="text" >取消</el-button>
-		            <el-button type="primary" size="mini" >确定</el-button>
+		            <el-button size="mini" type="text" @click="visible=false" >取消</el-button>
+		            <el-button type="primary" size="mini" @click="tuichu" >确定</el-button>
 		          </div>
 		          <el-button type="text" slot="reference">{{this.$store.getters.getUser.name}}</el-button>
 		        </el-popover>
@@ -90,6 +90,7 @@
 			  </div>
 			</div>
 		</el-footer>
+		<!-- <el-button @click="shiyan">ssss</el-button> -->
 	</el-container>
  
 </template>
@@ -112,8 +113,11 @@ export default {
 	  // 获取浏览器localStorage，判断用户是否已经登录
 		if (localStorage.getItem("user")) {
 			let user = JSON.parse(localStorage.getItem("user"))
-			let username = user.username
-			let password = user.password
+			window.localStorage.setItem('token', user.token)
+			user.icon ='http://127.0.0.1:7003/img/'+user.icon
+			this.$store.commit('login', {users:user,data:false})
+			// let username = user.username
+			// let password = user.password
 			//this.$store.dispatch('login',{username,password})
 		}
 	},
@@ -137,6 +141,16 @@ export default {
 	    // 点击登录按钮, 通过更改vuex的showLogin值显示登录组件
 	   this.$store.dispatch('setShowLogin',true)
 	  },
+	  tuichu() {
+		this.visible = false;
+		// 清空本地登录信息
+		window.localStorage.setItem("user", "");
+		window.localStorage.setItem('token',"")
+		// 清空vuex登录信息
+		this.$store.dispatch('setUser',"")
+		this.$router.push({ path: "/home" });
+		this.notifySucceed("成功退出登录");
+	  },
 	  zhuche() {
 		this.$store.dispatch('setisRegister',true) 
 	  },
@@ -155,6 +169,10 @@ export default {
 		    this.$router.push({ path: "/about", query: { search: this.search } });
 		    this.search = "";
 		  }
+	  },
+	  shiyan() {
+		  window.localStorage.setItem('token', 'shiyan')
+		  console.log(window.localStorage.getItem('token'))
 	  }
 	  
 	}
@@ -183,7 +201,7 @@ export default {
   padding: 0;
 }
 #app .el-main {
-  min-height: 300px;
+  min-height: 550px;
   padding: 20px 0;
 }
 #app .el-footer {

@@ -64,24 +64,30 @@
 			  <p class="shipment" v-if="orders.status==0">等待卖家确定</p>
 			  <p class="shipment" v-if="orders.status==1">等待发货</p>
 			  <p class="shipment" v-if="orders.status==2">等待收货</p>
-			   <p class="shipment" v-if="orders.status==3">退货完成</p>
+			  <p class="shipment" v-if="orders.status==3">退货完成</p>
+			  <p class="shipment" v-if="orders.status==4">拒绝退货</p>
 			</div>
 			<!-- 配送方式END -->
 			
 			<!-- 详细 -->
-			<div class="section-invoice" v-if="orders.status!==0">
+			<div class="section-invoice" v-if="orders.status!==0&&orders.status!==4">
 			  <p class="title">电话</p>
 			  <p class="invoice">{{orders.phone}}</p>
 			</div>
 			
-			<div class="section-invoice" v-if="orders.status!==0">
+			<div class="section-invoice" v-if="orders.status!==0&&orders.status!==4">
 			  <p class="title">收货人</p>
 			  <p class="invoice">{{orders.addressname}}</p>
 			</div>
 			
-			<div class="section-invoice" v-if="orders.status!==0">
+			<div class="section-invoice" v-if="orders.status!==0&&orders.status!==4">
 			  <p class="title">邮寄地址</p>
 			  <p class="invoice">{{orders.province}}/{{orders.city}}/{{orders.region}}</p>
+			</div>
+			
+			<div class="section-invoice" v-if="orders.status!==0&&orders.status!==4">
+			  <p class="title">详细地址</p>
+			  <p class="invoice">{{orders.detailaddresss}}</p>
 			</div>
 			
 			<div class="section-invoice" >
@@ -114,7 +120,9 @@
 				<el-button class="btn-base btn-primary" v-if="byuserid===user.userid&&orders.status===0" @click="yestuihuo">同意退货</el-button>
 				<el-button class="btn-base btn-primary" v-if="byuserid===user.userid&&orders.status===2" @click="tuihuoqueding">同意收货</el-button>
 				<el-button class="btn-base btn-primary" v-if="userid===user.userid&&orders.status===1" @click="getisfahuo">去发货</el-button>
-				<el-button class="btn-base btn-jujue" v-if="byuserid===user.userid&&orders.status===0" @click="">拒绝退货</el-button>
+				<el-button class="btn-base btn-primary" v-if="userid===user.userid&&orders.status===4" @click="readytuihuo">重新请求</el-button>
+				<el-button class="btn-base btn-primary" v-if="userid===user.userid&&orders.status===4" @click="queding">确认收货</el-button>
+				<el-button class="btn-base btn-jujue" v-if="byuserid===user.userid&&orders.status===0" @click="notuihuo">拒绝退货</el-button>
 			  </div>
 			</div>
 			<!-- 结算导航END -->
@@ -241,6 +249,12 @@ export default {
 				if(response.data.code==200){
 					this.notifySucceed(response.data.message);
 					this.orders.status = 1
+					this.orders.phone = response.data.data.phone
+					this.orders.addressname = response.data.data.addressname
+					this.orders.province = response.data.data.province
+					this.orders.city = response.data.data.city
+					this.orders.region = response.data.data.region
+					this.orders.detailaddresss =response.data.data.detailaddresss
 				}else {
 					this.notifyError(response.data.message);
 				}
@@ -249,6 +263,60 @@ export default {
 			 this.notifyError("连接失败");
 			})	
 			
+		},
+		notuihuo () {
+			let byorderid = this.orders.byorderid
+			request({
+			  method: 'post',
+			  url: `/order/notuihuo/${byorderid}`,
+			  headers: {'token': window.localStorage.getItem('token')},
+			}).then(response => {
+				if(response.data.code==200){
+					this.notifySucceed(response.data.message);
+					this.orders.status = 4
+				}else {
+					this.notifyError(response.data.message);
+				}
+			}).catch((error) => {
+			  console.log(error)
+			 this.notifyError("连接失败");
+			})
+		},
+		readytuihuo () {
+			let byorderid = this.orders.byorderid
+			request({
+			  method: 'post',
+			  url: `/order/readytuihuo/${byorderid}`,
+			  headers: {'token': window.localStorage.getItem('token')},
+			}).then(response => {
+				if(response.data.code==200){
+					this.notifySucceed(response.data.message);
+					this.orders.status = 0
+				}else {
+					this.notifyError(response.data.message);
+				}
+			}).catch((error) => {
+			  console.log(error)
+			 this.notifyError("连接失败");
+			})
+		},
+		queding() {
+			let urls = '/order/queding/'+this.orders.orderid
+			request({
+			  method: 'post',
+			  url: urls,
+			  headers: {'token': window.localStorage.getItem('token')},
+			}).then(response => {
+				if(response.data.code==200){
+					this.notifySucceed(response.data.message)
+					this.$router.push({ path: "/order", query: { isorder: "order" } });
+				}else {
+					this.notifyError(response.data.message);
+				}
+			}).catch((error) => {
+			  console.log(error)
+			  this.notifyError("连接失败");
+			})
 		},
 		tuihuoqueding() {
 			let urls = '/order/tuihuoqueding/'+this.orders.byorderid
