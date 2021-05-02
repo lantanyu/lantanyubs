@@ -56,7 +56,7 @@ export default {
 			if(select==1) {
 				request({
 					  method: 'get',
-					  url: `/user/getcountcuser3/${yie}/0/${userid}`,
+					  url: `/user/all/getcountcuser3/${yie}/0/${userid}`,
 					  headers: {'token': window.localStorage.getItem('token')},
 					}).then(response => {
 						console.log(response.data.code)
@@ -77,7 +77,7 @@ export default {
 			if(select==2) {
 				request({
 					  method: 'get',
-					  url: `/user/getfancuser/${yie}/0/${userid}`,
+					  url: `/user/all/getfancuser/${yie}/0/${userid}`,
 					  headers: {'token': window.localStorage.getItem('token')},
 					}).then(response => {
 						console.log(response.data.code)

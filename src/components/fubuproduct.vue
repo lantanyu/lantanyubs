@@ -257,6 +257,7 @@ export default {
 					let productst = this.$store.state.products
 					let i =0
 					let picbs = [] //备份
+					console.log(this.delectpic)
 					productst.pic = productst.pic.filter(pics => {
 						let ifs =0
 						picbs.push(pics)
@@ -265,10 +266,11 @@ export default {
 								ifs =1
 							}
 						})
+						console.log(ifs)
 						if(ifs==1){
 							return false
 						}
-						this.tupian =';'+pics.substr(26,41)
+						this.tupian =this.tupian+';'+pics.substr(26,41)
 						return true
 					})
 					
