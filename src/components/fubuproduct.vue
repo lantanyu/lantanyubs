@@ -312,6 +312,7 @@ export default {
 							this.product.city=[]
 							this.delectpic =[]
 							this.tupian =''
+							this.$store.commit('setisfabugenxin',false)
 							this.$store.dispatch('setisfabu',false) ;
 						}else {
 							this.delectpic =[]
@@ -453,6 +454,18 @@ export default {
 				products.pic.forEach(pics => {
 					this.fileList.push({name:i+'jqg',url:pics})
 				})
+			}else {
+				this.$refs["ruleForm"].resetFields();
+				this.delectpic =[]
+				this.tupian =''
+				this.product.productidname=''
+				this.product.text=''
+				this.product.fenlei2id=[]
+				this.product.method=''
+				this.product.price =0
+				this.product.baoyouprice=0
+				this.product.city=[]
+				this.fileList =[]
 			}
 		}
 	},

@@ -182,7 +182,7 @@
 				<el-button type="primary" size="mini" v-if="or.status===0&&user.userid===or.userid" @click="zhifu(or)" style="margin-left: 5px; background-color:#ff6700; border-color: #ff6700;color: #fff;">去支付</el-button>
 				<el-button type="primary" size="mini" v-if="or.status===1&&user.userid===or.byuserid&&or.method!==2&&or.method!==3" @click="getisfahuo(or)" style="margin-left: 5px; background-color:#ff6700; border-color: #ff6700;color: #fff;width: 85px;">去发货</el-button>
 				<el-button type="primary" size="mini" v-if="or.status===2&&user.userid===or.userid" @click="getistuihuo(or)" style="margin-left: 5px; background-color:#ff6700; border-color: #ff6700;color: #fff;">申请退货</el-button>
-				<el-button type="primary" size="mini" v-if="or.status===2&&user.userid===or.userid" @click="queding(or)" style="margin-left: 5px; background-color:#ff6700; border-color: #ff6700;color: #fff;">确定收货</el-button>
+				<el-button type="primary" size="mini" v-if="or.status===2&&user.userid===or.userid||or.status===1&&user.userid===or.userid&&or.method!==0&&or.method!==1" @click="queding(or)" style="margin-left: 5px; background-color:#ff6700; border-color: #ff6700;color: #fff;">确定收货</el-button>
 				<el-button type="primary" size="mini" v-if="or.status===6" @click="tuihuoxx(or)" style="margin-left: 5px; background-color:#ff6700; border-color: #ff6700;color: #fff;">退货详细</el-button>
 		      </div>
 		      <div class="order-bar-right">

@@ -11,9 +11,9 @@ export default {
 	data(){
 		
 		return{
-			imagesBox:[{id:0,idView:require("../assets/64905c5ededa41b56aef98c451c7703e.jpeg")},
-				{id:1,idView:require("../assets/092fcbbb26740518309042ea451c43ac.jpeg")},
-				{id:2,idView:require("../assets/64905c5ededa41b56aef98c451c7703e.jpeg")}],
+			imagesBox:[{id:0,idView:require("../assets/0f86e3a3e350d54907b00692a13359c0.jpeg")},
+				{id:1,idView:require("../assets/4e67dd859e130ecb296e7a268273732f.jpeg")},
+				{id:2,idView:require("../assets/cbb24644546ec0342038c29ecfddc7b7.jpeg")}],
 			fiveNews: []
 		}
 	}

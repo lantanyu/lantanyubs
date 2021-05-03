@@ -215,10 +215,13 @@ export default {
 								this.user.phone=this.xinxi.phone
 								this.user.gender=this.xinxi.gender
 								if(response.data.data!=''){
-									this.user.icon = 'http://127.0.0.1:7003/img/'+response.data.data
+									this.user.icon = response.data.data
 								}
 								this.user.city = city
 								let userbs = JSON.stringify(this.user);
+								if(response.data.data!=''){
+									this.user.icon = 'http://127.0.0.1:7003/img/'+response.data.data
+								}
 								window.localStorage.setItem("user", userbs);
 								this.$refs["ruleForm"].resetFields();
 								this.fileList =[]
